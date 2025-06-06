@@ -232,6 +232,10 @@ if selected_title:
             acteurs = "N/A"
         st.markdown(f"<p style='color:white;'>**Acteurs :** {acteurs}</p>", unsafe_allow_html=True)
 
+
+
+        CHANGEMENT
+
     
 
         
