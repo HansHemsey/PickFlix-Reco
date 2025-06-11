@@ -179,9 +179,9 @@ if search_input:
             selected_title = st.selectbox("Résultats correspondants :", matching_titles, key="title_selector", label_visibility="collapsed")
     else:
         with col2:
-            st.markdown("<p style='color:gray; text-align: center;'>Aucun film ne correspond à votre recherche.</p>", unsafe_allow_html=True)
+            st.markdown("<p style='color:white; text-align: center;'>Aucun film ne correspond à votre recherche.</p>", unsafe_allow_html=True)
 else:
-    
+        # --- Affichage de 5 films populaires ---
     st.markdown("---")
     st.markdown("<h3 style='color:#e50914; text-align: center;'>Films Populaires du Moment</h3>", unsafe_allow_html=True)
     popular_movies = df.nlargest(5, 'popularity')
@@ -189,9 +189,16 @@ else:
     for i, movie in enumerate(popular_movies.itertuples()):
         with cols[i]:
             if pd.notna(movie.poster_path):
-                st.image(movie.poster_path, caption=movie.title, use_container_width=True)
+                st.image(movie.poster_path, use_container_width=True)
+
+                # Titre en blanc, centré
+                st.markdown(
+                    f"<div style='text-align: center; color: white; font-weight: ;'>{movie.title} ({movie.release_year})</div>",
+                    unsafe_allow_html=True
+                )
             else:
                 st.write(movie.title)
+
 
     # --- Affichage de films récents aléatoires ---
     st.markdown("---")
@@ -211,9 +218,15 @@ else:
         for i, movie in enumerate(random_recent_movies.itertuples()):
             with recent_cols[i]:
                 if pd.notna(movie.poster_path):
-                    st.image(movie.poster_path, caption=f"{movie.title} ({int(movie.release_year)})", use_container_width=True)
+                    st.image(movie.poster_path, use_container_width=True)
+
+                    # Titre en blanc, centré
+                    st.markdown(
+                        f"<div style='text-align: center; color: white; font-weight: ;'>{movie.title} ({movie.release_year})</div>",
+                        unsafe_allow_html=True
+                    )
                 else:
-                    st.write(f"{movie.title} ({int(movie.release_year)})") # Fallback to just title if poster is missing
+                    st.write(f"{movie.title} ({int(movie.release_year)})")
     else:
         st.markdown("<p style='color:white; text-align: center;'>Aucun film récent disponible.</p>", unsafe_allow_html=True)
 
@@ -250,7 +263,11 @@ if selected_title:
         st.markdown(f"<p style='color:white;'><b>Acteurs :</b> {acteurs}</p>", unsafe_allow_html=True)
 
 
-    # Machine learning
+
+    #----------------------------------------------------------------------------------------------------------------------------------------------- #
+    #                                                               Machine learning                                                                 #
+    #----------------------------------------------------------------------------------------------------------------------------------------------- #
+
 
     # Import du dataset utilisé pour le ML
     df1 = pd.read_csv('./Datasets_cleaning/dataset_final_splitted.csv')
@@ -368,5 +385,11 @@ if selected_title:
         for i, row in recommended_movies.iterrows():
             with cols_reco[i]:
                 poster = row['poster_path'] if pd.notna(row['poster_path']) else "https://via.placeholder.com/300x450?text=No+Poster"
-                st.image(poster, caption=f"{row['title']} ({int(row['release_year'])})", use_container_width=True)
-    
+                
+                st.image(poster, use_container_width=True)
+
+                # Titre et année en blanc, centré, et un peu d'espace
+                st.markdown(
+                    f"<div style='text-align: center; color: white; margin-top: 5px;'>{row['title']} ({int(row['release_year'])})</div>",
+                    unsafe_allow_html=True
+                )
