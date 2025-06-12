@@ -17,7 +17,11 @@ import re
 import spacy
 nltk.download('stopwords')
 nltk.download('punkt_tab')
-nlp = spacy.load('en_core_web_sm')
+
+@st.cache_resource
+def load_spacy_model():
+    return spacy.load("en_core_web_sm")
+
 
 # --- CSS / HTML pour la Navbar et la Hero Section ---
 st.markdown("""
@@ -270,47 +274,42 @@ if selected_title:
 
 
     # Import du dataset utilisé pour le ML
-    df1 = pd.read_csv('./Datasets_cleaning/dataset_final_splitted.csv')
-    df_ml = df1.drop(columns = ['Unnamed: 0.1', 'Unnamed: 0']).copy()
-
+    @st.cache_data
+    def chargement(): 
+        df1 = pd.read_csv('./Datasets_cleaning/dataset_final_splitted.csv')
+        df_ml = df1.drop(columns = ['Unnamed: 0.1', 'Unnamed: 0']).copy()
+        return df_ml
+    df_ml = chargement()
 
     # Application du Lemmatizer
-    # LEMMATIZER
-    stop_words = set(stopwords.words('english'))
-
-    # On créé une fonction pour passer le texte en minuscule
-    def lower_case(text: str) -> str:
-        return text.lower()
-
-    # On créé une fonction pour supprimer les balises html du texte
-    def remove_html_tags(text: str) ->  str:
-        return re.sub(r'<.*?>', '', text)
-    # <h1> </p> <b> </b> <a href="http://google.com"> </a>
-
-    # On créé une fonction pour enlever les caractères spéciaux
-    def remove_special_char(text: str) -> str:
-        return re.sub(r'[^a-zA-Z0-9\s]', '', text)
-
-    # On créé une fonction pour enlever les stopwords
-    def remove_stopwords(text: str) -> str:
-        return ' '.join([word for word in text.split() if word not in stop_words])
-
-    # On créé une fonction pour appliquer le lemmatiser sur le texte
-    def lemmatize(text: str) -> str:
+    @st.cache_data
+    def clean_text(text: str) -> str:
+        nlp = load_spacy_model()
+        # Chargement des stopwords
+        stop_words = set(stopwords.words('english'))
+        # 1. Conversion en minuscules
+        text = text.lower()
+        # 2. Suppression des balises HTML
+        text = re.sub(r'<.*?>', '', text)
+        # 3. Suppression des caractères spéciaux (garde lettres, chiffres et espaces)
+        text = re.sub(r'[^a-zA-Z0-9\s]', '', text)
+        # 4. Suppression des stopwords
+        text = ' '.join([word for word in text.split() if word not in stop_words])
+        # 5. Lemmatization avec spaCy
         doc = nlp(text)
-        return ' '.join([token.lemma_ for token in doc])
+        text = ' '.join([token.lemma_ for token in doc])
+        # 6. Nettoyage final des espaces multiples
+        text = ' '.join(text.split())
+        return text
 
-    # On créé une fonction qui va appliquer toutes les transformations sur le texte
-    def main_clean(review: str) -> str:
-        review = lower_case(review)
-        review = remove_html_tags(review)
-        review = remove_special_char(review)
-        review = remove_stopwords(review)
-        review = lemmatize(review)
-        return review
-
+    @st.cache_data
+    def clean_dataframe_column(df_ml, column_name: str, language: str = 'english'):
+        # Appliquer le nettoyage sur la colonne spécifiée
+        df_ml[f'clean_{column_name}'] = df_ml[column_name].apply(clean_text)
+        return df_ml
+    
     # Intégration dans le DF
-    df_ml['clean_overview'] = df_ml['overview'].apply(main_clean)
+    df_ml = clean_dataframe_column(df_ml, 'overview')
 
     # Sélection des features
     X = df_ml[['release_year', 'runtimeMinutes', 'vote_average', 'vote_count', 'genre_1', 'nationality_1', 'title', 'actor_1', 'clean_overview']]
