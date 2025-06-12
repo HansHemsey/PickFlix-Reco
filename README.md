@@ -1,4 +1,4 @@
-# Introduction
+# 📖 Introduction
 
 « Netflix est un service de diffusion en streaming qui permet à ses membres de regarder une grande variété de séries TV, films, documentaires, etc. sur des milliers d’appareils connectés à Internet. »
 Créé en 1998, Netflix pèse aujourd’hui plus de 20 milliards de dollars de chiffre d’affaires et consomme 12,6% de la bande passante Internet mondiale.
@@ -7,7 +7,7 @@ Netflix calcule ainsi la probabilité que l’utilisateur regarde un titre donn�
 Netflix est l’archétype de la société data-driven.
 Votre client n’est pas Netflix, mais il a de grandes ambitions !
 
-# Objectif & Enjeux
+# 🎯 Objectif & Enjeux
 
 Vous êtes un Data Analyst freelance. Un cinéma en perte de vitesse situé dans la Creuse vous contacte. Il a décidé de passer le cap du digital en créant un site Internet taillé pour les locaux.
 Pour aller encore plus loin, il vous demande de créer un moteur de recommandations de films qui à terme, enverra des notifications aux clients via Internet.
@@ -25,14 +25,14 @@ Il vous est demandé de récupérer les images des films pour les afficher dans 
 Attention ! L’objectif n’est pas de diffuser dans le cinéma les films recommandés. L’objectif final est d’avoir une application avec d’une part des KPI et d’autre part le système de recommandation avec une zone de saisie de nom de film pour l’utilisateur. 
 Cette application sera mise à disposition des clients du cinéma afin de leur proposer un service supplémentaire, en ligne, en plus du cinéma classique.
 
-# Ressources
+# 📚 Ressources
 
 Les données sont disponibles sur le site IMDb, réparties en plusieurs tables (films, acteurs, réalisateurs, notes, etc.).
 - Documentation des colonnes et tables : "https://developer.imdb.com/non-commercial-datasets/"
 - Datasets IMDb : "https://datasets.imdbws.com/"
 - Dataset complémentaire TMDB : "https://drive.google.com/file/d/1VB5_gl1fnyBDzcIOXZ5vUSbCY68VZN1v/view"
 
-# Remarques Techniques
+# ⚙️ Remarques Techniques
 
 Vous pouvez télécharger les datasets en local, sur votre Drive ou bien sur un GitHub. Mais vous pouvez surtout ne pas les télécharger, et importer directement les datasets dans Pandas en mettant le lien du dataset.
 Les datasets sont très volumineux, il y a plus de 7M films et 10M acteurs référencés. Vous n’aurez sans doute pas besoin de la base complète. 
@@ -42,7 +42,7 @@ Parfois, vous ne pourrez donc pas charger tous ces volumineux datasets. N’hés
 Les datasets IMDB sont au format TSV, pour “Tabulation Separated Values”. C’est similaire au format CSV, mais séparé par des tabulations plutôt que des virgules. 
 Vous pouvez utiliser la fonction suivante, qui indique que le séparateur est une tabulation : pd.read_csv(“dataset_link”, sep = “\t”, nrows=1000)
 
-# Organisation et Planning
+# 🗓️ Organisation et Planning
 
 Vous aurez besoin de faire des jointures (comme en SQL) entre les datasets, des graphiques en Python, des retraitements avec Pandas, du machine learning. 
 Bien entendu, vous ne pourrez pas tout faire la première semaine, car vous apprendrez ces notions en parallèle du projet. 
@@ -53,7 +53,7 @@ Afin de vous donner de la visibilité, voici un planning indicatif, mais libre �
 - Semaine 5 & 6 : Machine learning et recommandations (scikit-learn)
 - Semaine 7 : Affinage, interface et présentation
 
-# Besoins Clients
+# 💭 Besoins Clients
 
 Le client aurait souhaité intégrer votre analyse et vos recommandations à son site pour pouvoir le tester, mais le timing est trop serré. 
 Force de proposition, vous lui proposer de __le rendre testable au moyen d’un outil de votre choix__.
@@ -64,7 +64,7 @@ Le client a 2 besoins, qui peuvent être dans 2 outils séparés :
   Vous pouvez intégrer ces recommandations à un outil de dashboarding, ou bien faire ces recommandations directement depuis la ligne de commande (“input”).
 L’objectif n’est pas d’arriver à un travail parfait, mais que le système fonctionne et que vous arriviez à déceler les points à améliorer.*
 
-# Missions et Livrables Attendus
+# 🎬 Missions et Livrables Attendus
 
   1. Missions
 - Faire une présentation pour présenter votre travail, expliquer votre démarche, les outils utilisés, les difficultés rencontrées, et des pistes d’amélioration.
