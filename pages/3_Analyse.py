@@ -27,257 +27,90 @@ st.markdown("""
 #                                                       CONTENU 
 # ------------------------------------------------------------------------------------------------------------------------ #
 
-tab1, tab2, tab3, tab4 = st.tabs(["Cinematic Overview", "Genres", "RunTime", "Cast & Crew"])
+# Création de 3 onglets
+tab1, tab2, tab3 = st.tabs(["Films & Genres", "Acteurs & Réalisateurs", "Durée"])
+
 with tab1:
-    df['release_year'] = pd.to_datetime(df['release_date'], errors='coerce').dt.year
-    yearly_movies = df['release_year'].value_counts().reset_index()
-    yearly_movies.columns = ['Année', 'Nombre de films']
-    yearly_movies = yearly_movies.sort_values('Année')
+    st.header("Les films de notre dataset :movie_camera: ")
 
-    fig2 = px.line(yearly_movies, x='Année', y='Nombre de films', title="Évolution des sorties de films par année")
-    fig2.update_traces(line=dict(color='indigo'))
-    fig2.update_layout(xaxis_title="Année", yaxis_title="Nombre de films", height=600, margin=dict(l=50, r=50, t=50, b=50))
-    st.plotly_chart(fig2, use_container_width=True)
-
-    #st.subheader("Nombre de films par pays d'origine (Top 5 + Autres)")
-
-    df['origin_country'] = df['origin_country'].apply(lambda x: ast.literal_eval(x) if isinstance(x, str) else x)
-    countries_expanded = df.explode('origin_country')
-    country_counts = countries_expanded['origin_country'].value_counts().reset_index()
-    country_counts.columns = ['country', 'count']
-
-    top_5_countries = country_counts.head(5)
-    autres_count = country_counts.iloc[5:]['count'].sum()
-    autres_row = pd.DataFrame({'country': ['Autres'], 'count': [autres_count]})
-    top_5_with_autres = pd.concat([top_5_countries, autres_row], ignore_index=True)
-
-    custom_colors = px.colors.sequential.Plasma[:4] + ["#FFD700"]
-    fig3 = px.pie(top_5_with_autres, values='count', names='country', title="Nombre de films par pays d'origine (Top 5 + Autres)", hole=0.4, color_discrete_sequence=custom_colors)
-    fig3.update_traces(textposition='inside', textinfo='percent+label')
-
-    st.plotly_chart(fig3, use_container_width=True)
-
-    # Afficher le heatmap
-    #st.markdown("<p style='font-size:10px;'>Top 10 des acteurs les mieux notés avec au moins 10 films</p>", unsafe_allow_html=True)
-    col1, col2, col3 = st.columns([1, 2, 1])
-
+    col1, col2 = st.columns(1,4)
+    with col1:
+        st.image("images/films_total.png")
     with col2:
-        st.image("images/Heatmap.png")
-    # st.image("images/Heatmap.png")
+        st.image("images/evol_films.png")
+    
+    col3, col4 = st.columns(4,1)
+    with col1:
+        st.image("images/films_note.png")
+    with col2:
+        st.image("images/films_us.png")
+
+    col5, col6 = st.columns(1,4)
+    with col5:
+        st.image("images/films_fr.png")
+    with col6:
+        st.image("images/films_pop.png")
+    
+    col7, col8 = st.columns(4,1)
+    with col7:
+        st.image("images/genre_pop.png")
+    with col8:
+        st.markdown("""
+                    <p class="custom-paragraph">Ici, ce n'est pas très représentatif... </p>
+                    <p class="custom-paragraph">Le film le plus populaire du dataset est un film du genre 'Horror'.</p>
+                    <p class="custom-paragraph">Sa popularité est tellement élevée qu'elle perturbe complètement les moyennes.</p>
+                    <p class="custom-paragraph">Il n'y a que 2,65% des films qui appartiennent au genre 'Horror' contre 52,11% de comédies (genre qui n'est même pas sur le podium du top 5).</p>
+    """, unsafe_allow_html=True)
+        
+    st.image("images/films_genres.png")
 
 with tab2:
-    st.header("Genres")
-    col1, col2 = st.columns(2)
+    st.header(" :eyes: Un petit coup d'oeil sur les acteurs / réalisateurs ")
+    col1, col2, col3 = st.columns(1,2,3)
+
     with col1:
-        st.title('')
-        df['genres'] = df['genres'].apply(lambda x: ast.literal_eval(x) if isinstance(x, str) else x)
-        all_genres = df.explode('genres')
-        all_genres['genre_name'] = all_genres['genres'].apply(lambda x: x['name'] if isinstance(x, dict) and 'name' in x else None)
-        all_genres = all_genres.dropna(subset=['genre_name'])
-        genre_counts = all_genres['genre_name'].value_counts().reset_index()
-        genre_counts.columns = ['Genre', 'Count']
-        fig1 = px.bar(
-                genre_counts,
-                x='Genre',
-                y='Count',
-                color='Count',
-                title="Distribution des Genres les Plus Fréquents",
-                labels={'Count': 'Nombre de films', 'Genre': 'Genre'},
-                color_continuous_scale='viridis'
-    )
-        fig1.update_layout(
-                xaxis_title="Genre",
-                yaxis_title="Nombre de films",
-                xaxis={'categoryorder': 'total descending'},  # Trier les genres par ordre décroissant de popularité
-                height=600,
-                width=1250,
-                margin=dict(l=50, r=50, t=50, b=150)
-    )   
-        st.plotly_chart(fig1, use_container_width=True)
+       st.image("images/age_moy.png")
+       
     with col2:
-        st.title('')
-        # Assurez-vous que la colonne 'genres' est bien en liste de dictionnaires
-        df['genres'] = df['genres'].apply(lambda x: ast.literal_eval(x) if isinstance(x, str) else x)
-
-        # Étendre le DataFrame pour exploser les genres
-        all_genres = df.explode('genres')
-
-        # Extraire le nom du genre de chaque dictionnaire
-        all_genres['genre_name'] = all_genres['genres'].apply(lambda x: x['name'] if isinstance(x, dict) and 'name' in x else None)
-
-        # Supprimer les lignes sans genre valide
-        all_genres = all_genres.dropna(subset=['genre_name'])
-
-        # Grouper les votes par genre
-        votes_by_genre = all_genres.groupby('genre_name', as_index=False)['vote_count'].sum()
-
-        #   Grouper par genre et calculer la moyenne des notes (vote_average)
-        average_votes_by_genre = all_genres.groupby('genre_name', as_index=False)['vote_average'].mean()
-
-        # Créer un sous-graphe avec deux graphiques l'un en dessous de l'autre
-        fig2 = make_subplots(
-            rows=2, cols=1,  # Deux sous-graphes dans deux lignes
-            subplot_titles=('Nombre de Votes par Genre', 'Moyenne des Notes par Genre')
-        )
-
-        # Créer un graphique pour les votes avec la palette 'Viridis'
-        fig2.add_trace(
-            go.Bar(
-                x=votes_by_genre['genre_name'],
-                y=votes_by_genre['vote_count'],
-                marker=dict(
-                    color=votes_by_genre['vote_count'],  # Appliquer la couleur en fonction du nombre de votes
-                    colorscale='Viridis',  # Palette de couleurs Viridis
-                    showscale=True  # Afficher l'échelle de couleurs
-                ),
-                name="Nombre de votes"
-            ),
-            row=1, col=1
-        )
-
-        # Créer un graphique pour la moyenne des notes avec la palette 'Viridis'
-        fig2.add_trace(
-            go.Bar(
-                x=average_votes_by_genre['genre_name'],
-                y=average_votes_by_genre['vote_average'],
-                marker=dict(
-                    color=average_votes_by_genre['vote_average'],  # Appliquer la couleur en fonction de la moyenne des notes
-                    colorscale='Viridis',  # Palette de couleurs Viridis
-                    showscale=True  # Afficher l'échelle de couleurs
-                ),
-                name="Moyenne des notes"
-            ),
-            row=2, col=1
-        )
-
-        # Mettre à jour la disposition du graphique
-        fig2.update_layout(
-            title="Répartition des Films par Genre",
-            height=900,  # Augmenter la hauteur pour deux graphiques
-            width=1250,
-            showlegend=False,
-            xaxis_title="Genre",
-            yaxis_title="Nombre de votes",
-            xaxis2_title="Genre",
-            yaxis2_title="Moyenne des notes",
-            xaxis={'categoryorder': 'total descending'},  # Trier les genres par ordre décroissant de popularité
-            margin=dict(l=50, r=50, t=50, b=150),# Ajouter des marges pour une meilleure lisibilité
-        )
-
-        # Afficher le graphique
-        st.plotly_chart(fig2, use_container_width=True)
+        st.image("images/top10_acteurs.png")
+    
+    with col3:
+        st.image("images/top10_real.png")
   
 with tab3:
-    st.header("Durée")
+    st.header("La durée des films a-t-elle toujours été la même ?")
+
     col1, col2 = st.columns(2)
     with col1:          
-        df_cleaned = df.dropna(subset=['runtime'])
-        fig3 = make_subplots(
-            rows=1, cols=2,
-            subplot_titles=("Histogramme des Durées", "Boîte à Moustaches des Durées"),
-            column_widths=[0.5, 0.5]  
-    ) 
-        fig3.add_trace(
-            go.Histogram(
-            x=df_cleaned['runtime'],
-            nbinsx=30,
-            name="Histogramme",
-            marker_color='indigo'
-        ),
-        row=1, col=1
-)
-# Ajouter la boîte à moustaches au sous-graphique 2
-        fig3.add_trace(
-            go.Box(
-            y=df_cleaned['runtime'],
-            name="distribution des durées des films",
-            marker_color='indigo'
-        ),
-        row=1, col=2
-)
-        fig3.update_yaxes(tickprefix='min ', row=1, col=2)
-
-        fig3.update_layout(
-        title="Distribution des Durées des Films",
-        xaxis_title="Durée des films (minutes)",
-        yaxis_title="Fréquence",
-        showlegend=False,
-        height=600
-)
-        st.plotly_chart(fig3, use_container_width=True)
+       st.image("images/evol_duree.png")
 
     with col2:
+        st.markdown("""
+        <p class="custom-paragraph">Dans notre dataset, nous avons des films sortis entre 1914 et 2023.</p>
+        <p class="custom-paragraph">Ah c'est sûr qu'il y a du choix, mais quand on veut regarder l'évolution de la durée des films c'est moins pratique.</p>
+        <p class="custom-paragraph">En 1915 et en 1918, deux films extrêment longs ont été réalisés (respectivement 421 minutes et 191 minutes).</p> 
+        <p class="custom-paragraph">Le paysage cinématographique était alors réduit.</p> 
+        <p class="custom-paragraph">Ce qui nous donne une courbe qui malgré un début presque chaotique semble relativement plate.</p>    
+    """, unsafe_allow_html=True)
+         
+    col3, col4 = st.columns(2)
+    with col3:
+        st.markdown("""
+        <p class="custom-paragraph">De ce fait, on va se permettre un zoom pour isoler ces outliers.</p>
+        <p class="custom-paragraph">Maintenant, on peut voir que la durée des films a progressivement augmenté jusqu'en 1962.</p>
+        <p class="custom-paragraph">Elle va osciller autour des 100 minutes jusqu'en 2023.</p>
+    """, unsafe_allow_html=True)
         
-        top_10_longest = df[['title', 'runtime']].sort_values(by='runtime', ascending=False).head(10)
-        top_10_shortest = df[['title', 'runtime']].sort_values(by='runtime').head(10)
+    with col4:
+        st.image("images/zoom_duree.png")
 
-# Bar chart : Films les plus longs
-        fig4 = px.bar(top_10_longest, x='title', y='runtime',
-            title="Top 10 des films les plus longs", labels={'title': 'Titre des films', 'runtime': 'Durée (min)'}, color_discrete_sequence=['indigo'])
-        fig4.update_xaxes(tickangle=45)
-        st.plotly_chart(fig4, use_container_width=True)
+    st.markdown("""
+        <p class="custom-paragraph">Et nos extrêmes alors ?</p>
+    """, unsafe_allow_html=True)
 
-# Bar chart : Films les plus courts
-        fig5 = px.bar(top_10_shortest, x='title', y='runtime',
-          title="Top 10 des films les plus courts", labels={'title': 'Titre des films', 'runtime': 'Durée (min)'}, color_discrete_sequence=['yellow'])
-        fig5.update_xaxes(tickangle=45)
-        st.plotly_chart(fig5, use_container_width=True)
-
-with tab4:
-        
-    #col1, col2 = st.columns(2)
-    #with col1:
-        st.header("Cast")          
-        st.image("images/Top 10 Acteurs.png")
-
-    #with col2: 
-        st.header(' Crew')   
-        director_votes = df.explode('cast')
-        director_votes = director_votes[director_votes['cast'].apply(
-            lambda x: isinstance(x, dict) and x.get('known_for_department') == 'Directing')]
-
-        director_votes['director_name'] = director_votes['cast'].apply(lambda x: x.get('name') if isinstance(x, dict) else None)
-
-
-        director_votes = director_votes.dropna(subset=['director_name'])
-
-
-        director_stats = director_votes.groupby('director_name').agg({
-            'vote_average': 'mean',
-            'vote_count': 'sum',
-            'original_title': 'count'
-    }).reset_index()
-
-
-        director_stats.rename(columns={
-            'original_title': 'film_count',
-            'vote_average': 'average_rating',
-            'vote_count': 'total_votes'
-    }, inplace=True)
-
-
-        director_stats = director_stats.sort_values(by='film_count', ascending=False)
-        fig2 = px.bar(
-        director_stats.head(10),  # Afficher les 10 meilleurs
-        x='director_name',
-        y='film_count',
-        title="Top 10 des directeurs par nombre de films", 
-        labels={'film_count': 'Nombre de films', 'director_name': 'Directeur'},
-        color='film_count',
-        color_continuous_scale='Plasma'
-)
-        st.plotly_chart(fig2, use_container_width=True)
-
-# Diagramme pour la moyenne des votes par réalisateur
-        fig3 = px.scatter(
-        director_stats.head(10),
-        x='director_name',
-        y='average_rating',
-        size='total_votes',
-        title="Analyses de notes de top 10 directeurs(moyenne des notes vs total des votes)",
-        labels={'average_rating': 'Moyenne des notes', 'total_votes': 'Total des votes', 'director_name': 'Directeur'},
-        color='average_rating',
-        color_continuous_scale='Plasma'
-)
-        st.plotly_chart(fig3, use_container_width=True)
+    col5, col6 = st.columns(2)
+    with col5:
+        st.image("images/top5_longs.png")
+    with col6:
+        st.image("images/top5_courts.png")
 
