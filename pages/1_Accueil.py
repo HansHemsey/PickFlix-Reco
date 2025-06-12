@@ -5,6 +5,7 @@
 import pandas as pd
 import streamlit as st
 import datetime
+import time
 import ast
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neighbors import NearestNeighbors
@@ -141,36 +142,38 @@ else:
 
 # --- Affiche le film sélectionné ---
 if selected_title:
-    selected_film = df[df["title"] == selected_title].iloc[0]
+    with st.spinner("Recherche de votre film ainsi que de ses recommandations..."):
+        time.sleep(4)
+        
+        selected_film = df[df["title"] == selected_title].iloc[0]
 
-    st.markdown("---")
-    st.markdown(f"<h3 style='color:#e50914;'>{selected_film['title']} ({int(selected_film['release_year']) if not pd.isna(selected_film['release_year']) else 'N/A'})</h3>", unsafe_allow_html=True)
-    
-    col1, col2, col3 = st.columns([2, 0.5, 3])
-    
-    if pd.notna(selected_film["poster_path"]):
-        with col1:
-            st.image(selected_film["poster_path"], use_container_width=True, caption=f"Affiche de {selected_film['title']}")
-    else:
-            st.warning("Affiche non disponible pour ce film.")
-
-    with col2:
-        st.markdown(f"<p style='color:white;'> ⌚ {int(selected_film['runtimeMinutes'])} min" if pd.notna(selected_film['runtimeMinutes']) else "**Durée :** N/A</p>", unsafe_allow_html=True)
-        st.markdown(f"<p style='color:white;'> ⭐ {selected_film['vote_average']:.2f} / 10" if pd.notna(selected_film['vote_average']) else "**Note moyenne :** N/A</p>", unsafe_allow_html=True)
-        st.markdown(f"<p style='color:white;'> 🔥 {selected_film['popularity']:.2f}" if pd.notna(selected_film['popularity']) else "**Popularité :** N/A</p>", unsafe_allow_html=True)
-        st.button("⭐ Ajouter aux favoris")
-
-    with col3:
-        st.markdown(f"<p style='color:white;'><b>Genres :</b> {selected_film['genres_x'] if pd.notna(selected_film['genres_x']) else 'N/A'}</p>", unsafe_allow_html=True)
-        st.markdown(f"<p style='color:white;'><b>Synopsis :</b> {selected_film['overview'] if pd.notna(selected_film['overview']) else 'N/A'}</p>", unsafe_allow_html=True)
-       
-        if pd.notna(selected_film['actors']):
-            acteurs_list = ast.literal_eval(selected_film['actors'])
-            acteurs = ", ".join(acteurs_list)
+        st.markdown("---")
+        st.markdown(f"<h3 style='color:#e50914;'>{selected_film['title']} ({int(selected_film['release_year']) if not pd.isna(selected_film['release_year']) else 'N/A'})</h3>", unsafe_allow_html=True)
+        
+        col1, col2, col3 = st.columns([2, 0.5, 3])
+        
+        if pd.notna(selected_film["poster_path"]):
+            with col1:
+                st.image(selected_film["poster_path"], use_container_width=True, caption=f"Affiche de {selected_film['title']}")
         else:
-            acteurs = "N/A"
-        st.markdown(f"<p style='color:white;'><b>Acteurs :</b> {acteurs}</p>", unsafe_allow_html=True)
+                st.warning("Affiche non disponible pour ce film.")
 
+        with col2:
+            st.markdown(f"<p style='color:white;'> ⌚ {int(selected_film['runtimeMinutes'])} min" if pd.notna(selected_film['runtimeMinutes']) else "**Durée :** N/A</p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='color:white;'> ⭐ {selected_film['vote_average']:.2f} / 10" if pd.notna(selected_film['vote_average']) else "**Note moyenne :** N/A</p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='color:white;'> 🔥 {selected_film['popularity']:.2f}" if pd.notna(selected_film['popularity']) else "**Popularité :** N/A</p>", unsafe_allow_html=True)
+            st.button("⭐ Ajouter aux favoris")
+
+        with col3:
+            st.markdown(f"<p style='color:white;'><b>Genres :</b> {selected_film['genres_x'] if pd.notna(selected_film['genres_x']) else 'N/A'}</p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='color:white;'><b>Synopsis :</b> {selected_film['overview'] if pd.notna(selected_film['overview']) else 'N/A'}</p>", unsafe_allow_html=True)
+        
+            if pd.notna(selected_film['actors']):
+                acteurs_list = ast.literal_eval(selected_film['actors'])
+                acteurs = ", ".join(acteurs_list)
+            else:
+                acteurs = "N/A"
+            st.markdown(f"<p style='color:white;'><b>Acteurs :</b> {acteurs}</p>", unsafe_allow_html=True)
 
 
     #----------------------------------------------------------------------------------------------------------------------------------------------- #
@@ -214,7 +217,8 @@ if selected_title:
         return df_ml
     
     # Intégration dans le DF
-    df_ml = clean_dataframe_column(df_ml, 'overview')
+    with st.spinner("Nettoyage des titres..."):
+        df_ml = clean_dataframe_column(df_ml, 'overview')
 
     # Sélection des features
     X = df_ml[['release_year', 'runtimeMinutes', 'vote_average', 'vote_count', 'genre_1', 'nationality_1', 'title', 'actor_1', 'clean_overview']]
