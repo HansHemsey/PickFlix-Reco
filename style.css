@@ -1,13 +1,13 @@
         body {
-            background-color: #141414 !important;
+            background-color: #000000 !important;
             color: white;
         }
         .stApp {
-            background-color: #141414;
+            background-color: #000000;
         }
 
         .navbar {
-            background-color: #141414;
+            background-color: #000000;
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
@@ -46,8 +46,12 @@
             cursor: pointer;
         }
 
+        .custom-paragraph {
+            color: white;
+        }
+
         .hero {
-            background-color: #141414;
+            background-color: #000000;
             padding: 6rem 2rem;
             text-align: center;
             color: white;
@@ -86,6 +90,14 @@
             color: white;
         }
 
+        .stTabs [data-baseweb="tab"] {
+            color: white;  /* texte des tabs non sélectionnés */
+        }
+
+        .stTabs [aria-selected="true"] {
+            color: red !important;  /* texte de l'onglet actif */
+            font-weight: bold;
+        }
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 2rem;
