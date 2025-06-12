@@ -22,121 +22,24 @@ nltk.download('punkt_tab')
 def load_spacy_model():
     return spacy.load("en_core_web_sm")
 
+# --- Chargement du CSS via le fichier style.css ---
+with open('style.css') as c:
+    css = c.read()
+st.markdown(f'<style>{css}</style>', unsafe_allow_html=True)
 
-# --- CSS / HTML pour la Navbar et la Hero Section ---
 st.markdown("""
-    <style>
-        body {
-            background-color: #141414 !important;
-            color: white;
-        }
-        .stApp {
-            background-color: #141414;
-        }
-
-        .navbar {
-            background-color: #141414;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-            font-family: 'Helvetica Neue', sans-serif;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .navbar-left {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: red;
-        }
-
-        .navbar-center a {
-            margin: 0 1rem;
-            text-decoration: none;
-            color: white;
-            font-size: 1.1rem;
-        }
-
-        .navbar-center a:hover {
-            color: #e50914;
-        }
-
-        .navbar-right {
-            background-color: #e50914;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            font-size: 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .hero {
-            background-color: #141414;
-            padding: 6rem 2rem;
-            text-align: center;
-            color: white;
-            font-family: 'Helvetica Neue', sans-serif;
-        }
-
-        .hero-title {
-            font-size: 3rem;
-            font-weight: bold;
-            margin-bottom: 1.5rem;
-        }
-
-        .stTextInput > div > div > input {
-            width: 100%; /* Make Streamlit input fill its container */
-            padding: 1rem;
-            font-size: 1.2rem;
-            border-radius: 5px;
-            border: none;
-            outline: none;
-            background-color: #333; /* Darker background for input */
-            color: white;
-        }
-        .stSelectbox > div > div > div {
-            background-color: #333;
-            color: white;
-        }
-        .stSelectbox > div > div > div > div[data-baseweb="select"] {
-            background-color: #333;
-            color: white;
-        }
-        .stSelectbox > div > div > div > div[role="listbox"] {
-            background-color: #333;
-            color: white;
-        }
-        .stSelectbox > div > div > div > div[role="option"] {
-            color: white;
-        }
-
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2rem;
-            }
-        }
-
-        img.movie-poster:hover {
-            transform: scale(1.05);
-            z-index: 10;
-        }
-    </style>
-
-    <div class="navbar">
-        <div class="navbar-left">PickFlix</div>
-        <div class="navbar-center">
-            <a href="#">Accueil</a>
-            <a href="#">Catégories</a>
-            <a href="#">Favoris</a>
-        </div>
-        <div class="navbar-right">
-            <a href="#recherche" style="text-decoration:none">🔎</a>
-        </div>
+<div class="navbar">
+    <div class="navbar-left">PickFlix</div>
+    <div class="navbar-center">
+        <a href="/app2", target="_self">Accueil</a>
+        <a href="/etude">Étude de marché</a>
+        <a href="/analyse">Analyse</a>
+        <a href="/conclusion">Conclusion</a>
     </div>
+    <div class="navbar-right">
+        <a href="#recherche" style="text-decoration:none">🔎</a>
+    </div>
+</div>
 """, unsafe_allow_html=True)
 
 # --- Hero Section ---
