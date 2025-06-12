@@ -23,7 +23,7 @@ import base64
 nltk.download('stopwords')
 nltk.download('punkt_tab')
 
-st.set_page_config(page_title="accueil", layout="wide")
+st.set_page_config(page_title="Accueil", layout="wide")
 
 @st.cache_resource
 def load_spacy_model():
@@ -111,7 +111,7 @@ else:
 
     # --- Affichage de films récents aléatoires ---
     st.markdown("---")
-    st.markdown("<h3 style='color:#e50914; text-align: center;'>Nouveautés Aléatoires</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='color:#e50914; text-align: center;'>Films Aléatoires</h3>", unsafe_allow_html=True)
 
     current_year = datetime.datetime.now().year
     years_back = 10 
