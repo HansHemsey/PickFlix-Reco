@@ -90,7 +90,7 @@ if search_input:
         with col2:
             st.markdown("<p style='color:white; text-align: center;'>Aucun film ne correspond à votre recherche.</p>", unsafe_allow_html=True)
 else:
-        # --- Affichage de 5 films populaires ---
+    # --- Affichage de 5 films populaires ---
     st.markdown("---")
     st.markdown("<h3 style='color:#e50914; text-align: center;'>Films Populaires du Moment</h3>", unsafe_allow_html=True)
     popular_movies = df.nlargest(5, 'popularity')
@@ -158,7 +158,7 @@ if selected_title:
         st.markdown(f"<p style='color:white;'> ⌚ {int(selected_film['runtimeMinutes'])} min" if pd.notna(selected_film['runtimeMinutes']) else "**Durée :** N/A</p>", unsafe_allow_html=True)
         st.markdown(f"<p style='color:white;'> ⭐ {selected_film['vote_average']:.2f} / 10" if pd.notna(selected_film['vote_average']) else "**Note moyenne :** N/A</p>", unsafe_allow_html=True)
         st.markdown(f"<p style='color:white;'> 🔥 {selected_film['popularity']:.2f}" if pd.notna(selected_film['popularity']) else "**Popularité :** N/A</p>", unsafe_allow_html=True)
-        
+        st.button("⭐ Ajouter aux favoris")
 
     with col3:
         st.markdown(f"<p style='color:white;'><b>Genres :</b> {selected_film['genres_x'] if pd.notna(selected_film['genres_x']) else 'N/A'}</p>", unsafe_allow_html=True)
@@ -257,6 +257,11 @@ if selected_title:
 
     # trouver les 5 films voisins
     distances, indices = model_pipeline.named_steps['neighbor'].kneighbors(movie_transformed)
+
+    #----------------------------------------------------------------------------------------------------------------------------------------------- #
+    #                                                               Post Processing                                                                 #
+    #----------------------------------------------------------------------------------------------------------------------------------------------- #
+
 
     # Récupérer les lignes correspondantes dans df_ml
     films_proches = df_ml.iloc[indices[0]]
