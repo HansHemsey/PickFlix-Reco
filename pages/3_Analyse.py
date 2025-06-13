@@ -31,39 +31,51 @@ st.markdown("""
 tab1, tab2, tab3 = st.tabs(["Films & Genres", "Acteurs & Réalisateurs", "Durée"])
 
 with tab1:
-    st.header("Les films de notre dataset :movie_camera: ")
+    st.markdown("""
+        <div class="hero-title">🎬 Les films de notre dataset</div>
+""", unsafe_allow_html=True)
+    
 
     col1, col2 = st.columns([1,4])
     with col1:
+        st.write("")
+        st.write("")
+        st.write("")
+        st.write("")
+        st.write("")
+        st.write("")
+        st.write("")
+        st.write("")
         st.image("images/films_total.png")
     with col2:
         st.image("images/evol_films.png")
-    
-    st.markdown("""
-                    <p class="custom-paragraph">‎</p>
-          """, unsafe_allow_html=True)
+
 
     col3, col4 = st.columns([4,1])
-    with col1:
+    with col3:
         st.image("images/films_note.png")
-    with col2:
+    with col4:
+        st.write("")
+        st.write("")
+        st.write("")
+        st.write("")
+        st.write("")
         st.image("images/films_us.png")
 
-    st.markdown("""
-                    <p class="custom-paragraph">‎</p>
-          """, unsafe_allow_html=True)
 
     col5, col6 = st.columns([1,4])
     with col5:
+        st.write("")
+        st.write("")
+        st.write("")
+        st.write("")
+        st.write("")
         st.image("images/films_fr.png")
     with col6:
         st.image("images/films_pop.png")
     
-    st.markdown("""
-                    <p class="custom-paragraph">‎</p>
-          """, unsafe_allow_html=True)
 
-    col7, col8 = st.columns([4,1])
+    col7, col8 = st.columns([3,2])
     with col7:
         st.image("images/genre_pop.png")
     with col8:
@@ -74,14 +86,14 @@ with tab1:
                     <p class="custom-paragraph">Il n'y a que 2,65% des films qui appartiennent au genre 'Horror' contre 52,11% de comédies (genre qui n'est même pas sur le podium du top 5).</p>
     """, unsafe_allow_html=True)
         
-    st.markdown("""
-                    <p class="custom-paragraph">‎</p>
-          """, unsafe_allow_html=True)
         
     st.image("images/films_genres.png")
 
-with tab2:
-    st.header(" :eyes: Un petit coup d'oeil sur les acteurs / réalisateurs ")
+with tab2:     
+    st.markdown("""
+        <div class="hero-title">👀 Un petit coup d'oeil sur les acteurs / réalisateurs</div>
+""", unsafe_allow_html=True)
+    
     col1, col2, col3 = st.columns([1,2,3])
 
     with col1:
@@ -94,7 +106,9 @@ with tab2:
         st.image("images/top10_real.png")
   
 with tab3:
-    st.header("La durée des films a-t-elle toujours été la même ?")
+    st.markdown("""
+        <div class="hero-title">⌚ La durée des films a-t-elle toujours été la même ?</div>
+""", unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
     with col1:          
