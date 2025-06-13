@@ -7,6 +7,8 @@ Netflix calcule ainsi la probabilité que l’utilisateur regarde un titre donn�
 Netflix est l’archétype de la société data-driven.
 Votre client n’est pas Netflix, mais il a de grandes ambitions !
 
+Lien de l'application : https://pickflix.streamlit.app/
+
 # 🎯 Objectif & Enjeux
 
 Vous êtes un Data Analyst freelance. Un cinéma en perte de vitesse situé dans la Creuse vous contacte. Il a décidé de passer le cap du digital en créant un site Internet taillé pour les locaux.
