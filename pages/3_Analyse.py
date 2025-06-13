@@ -39,11 +39,19 @@ with tab1:
     with col2:
         st.image("images/evol_films.png")
     
+    st.markdown("""
+                    <p class="custom-paragraph">‎</p>
+          """, unsafe_allow_html=True)
+
     col3, col4 = st.columns([4,1])
     with col1:
         st.image("images/films_note.png")
     with col2:
         st.image("images/films_us.png")
+
+    st.markdown("""
+                    <p class="custom-paragraph">‎</p>
+          """, unsafe_allow_html=True)
 
     col5, col6 = st.columns([1,4])
     with col5:
@@ -51,6 +59,10 @@ with tab1:
     with col6:
         st.image("images/films_pop.png")
     
+    st.markdown("""
+                    <p class="custom-paragraph">‎</p>
+          """, unsafe_allow_html=True)
+
     col7, col8 = st.columns([4,1])
     with col7:
         st.image("images/genre_pop.png")
@@ -61,6 +73,10 @@ with tab1:
                     <p class="custom-paragraph">Sa popularité est tellement élevée qu'elle perturbe complètement les moyennes.</p>
                     <p class="custom-paragraph">Il n'y a que 2,65% des films qui appartiennent au genre 'Horror' contre 52,11% de comédies (genre qui n'est même pas sur le podium du top 5).</p>
     """, unsafe_allow_html=True)
+        
+    st.markdown("""
+                    <p class="custom-paragraph">‎</p>
+          """, unsafe_allow_html=True)
         
     st.image("images/films_genres.png")
 
