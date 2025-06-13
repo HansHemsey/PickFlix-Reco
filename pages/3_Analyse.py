@@ -33,25 +33,25 @@ tab1, tab2, tab3 = st.tabs(["Films & Genres", "Acteurs & Réalisateurs", "Durée
 with tab1:
     st.header("Les films de notre dataset :movie_camera: ")
 
-    col1, col2 = st.columns(1,4)
+    col1, col2 = st.columns([1,4])
     with col1:
         st.image("images/films_total.png")
     with col2:
         st.image("images/evol_films.png")
     
-    col3, col4 = st.columns(4,1)
+    col3, col4 = st.columns([4,1])
     with col1:
         st.image("images/films_note.png")
     with col2:
         st.image("images/films_us.png")
 
-    col5, col6 = st.columns(1,4)
+    col5, col6 = st.columns([1,4])
     with col5:
         st.image("images/films_fr.png")
     with col6:
         st.image("images/films_pop.png")
     
-    col7, col8 = st.columns(4,1)
+    col7, col8 = st.columns([4,1])
     with col7:
         st.image("images/genre_pop.png")
     with col8:
@@ -66,7 +66,7 @@ with tab1:
 
 with tab2:
     st.header(" :eyes: Un petit coup d'oeil sur les acteurs / réalisateurs ")
-    col1, col2, col3 = st.columns(1,2,3)
+    col1, col2, col3 = st.columns([1,2,3])
 
     with col1:
        st.image("images/age_moy.png")
